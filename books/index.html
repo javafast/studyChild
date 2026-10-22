@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>语文课本书架</title>
+  <link rel="stylesheet" href="books.css">
+</head>
+<body class="library-page">
+  <header class="library-head">
+    <a class="back-link" href="../">← 返回乐园</a>
+    <div>
+      <h1>📚 语文课本书架</h1>
+      <p>选择一本课本，继续上次阅读的位置</p>
+    </div>
+  </header>
+  <main>
+    <nav id="grade-filters" class="grade-filters" aria-label="按年级筛选">
+      <button class="active" data-grade="all">全部</button>
+      <button data-grade="1">一年级</button>
+      <button data-grade="2">二年级</button>
+      <button data-grade="3">三年级</button>
+      <button data-grade="4">四年级</button>
+    </nav>
+    <section id="book-grid" class="book-grid" aria-live="polite"></section>
+  </main>
+  <script type="module" src="library.js"></script>
+</body>
+</html>

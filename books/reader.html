@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover">
+  <title>课本阅读</title>
+  <link rel="stylesheet" href="books.css">
+</head>
+<body class="reader-page">
+  <header class="reader-bar">
+    <a class="reader-back" href="./">← 书架</a>
+    <strong id="book-title">正在打开课本…</strong>
+    <div class="reader-actions">
+      <button id="zoom-out" title="缩小">−</button>
+      <span id="zoom-label">100%</span>
+      <button id="zoom-in" title="放大">＋</button>
+      <button id="fullscreen" title="全屏">⛶</button>
+    </div>
+  </header>
+  <main id="page-stage" class="page-stage">
+    <button id="exit-immersive" class="exit-immersive hidden" title="退出全屏">退出全屏</button>
+    <div id="loading" class="reader-loading">📖 正在加载课本…</div>
+    <img id="page-image" class="hidden" alt="课本页面">
+    <canvas id="pdf-canvas" aria-label="PDF课本页面"></canvas>
+  </main>
+  <footer class="reader-nav">
+    <button id="prev-page">← 上一页</button>
+    <label><input id="page-number" type="number" min="1" value="1" inputmode="numeric"> / <span id="page-count">—</span></label>
+    <button id="next-page">下一页 →</button>
+  </footer>
+  <div id="reader-error" class="reader-error hidden"></div>
+  <script type="module" src="reader.js"></script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>键盘大冒险 · 儿童英语字母单词</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎹</text></svg>">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ========== 首页 / 章节选择 ========== -->
+  <section id="view-home" class="view">
+    <header class="hero">
+      <div>
+        <h1>🎹 键盘大冒险</h1>
+        <p class="sub">字母 × 单词 · 给小朋友的打字练习</p>
+      </div>
+      <div class="hero-ctrl">
+        <button id="btn-profile" class="ghost profile-chip" title="切换档案">🐼 小朋友</button>
+        <span id="streak-chip" class="streak-chip hidden"></span>
+      </div>
+    </header>
+
+    <!-- 乐园选择（首页入口） -->
+    <div id="hub-lands" class="hub-lands">
+      <button class="land-card land-words" data-land="words">
+        <span class="land-emoji">🍎</span>
+        <span class="land-name">单词乐园</span>
+        <span class="land-desc">字母触摸键 · 单词挑战</span>
+      </button>
+      <button id="btn-game" class="land-card land-game">
+        <span class="land-emoji">🐸</span>
+        <span class="land-name">游戏乐园</span>
+        <span class="land-desc">青蛙过河 · 闯关比赛</span>
+      </button>
+      <button class="land-card land-writing" data-land="writing">
+        <span class="land-emoji">✍️</span>
+        <span class="land-name">写字乐园</span>
+        <span class="land-desc">拼字 · 配对 · 写字练习</span>
+      </button>
+    </div>
+    <a class="lang-switch-fab" href="../" title="切换到拼音学习站">🐼 拼音学习 →</a>
+
+    <div id="tabs-bar" class="tabs-bar hidden">
+      <button id="btn-land-back" class="ghost land-back">← 乐园</button>
+      <nav class="tabs">
+        <button class="tab" data-track="letters">⌨️ 字母触摸键</button>
+        <button class="tab" data-track="words">🍎 单词挑战</button>
+      </nav>
+    </div>
+
+    <div id="curriculum-picker" class="curriculum-picker hidden">
+      <label>年级
+        <select id="grade-select">
+          <option value="1">一年级</option>
+          <option value="2">二年级</option>
+          <option value="3">三年级</option>
+          <option value="4">四年级</option>
+          <option disabled>五年级（即将开放）</option>
+          <option disabled>六年级（即将开放）</option>
+        </select>
+      </label>
+      <label>学期
+        <select id="semester-select">
+          <option value="1">上册 · 2024 秋新版</option>
+          <option value="2">下册 · 2024 新版</option>
+        </select>
+      </label>
+      <span>按课文学习汉字、拼音和组词</span>
+    </div>
+
+    <div id="chapter-grid" class="grid"></div>
+
+    <footer id="home-foot" class="home-foot">
+      <button id="btn-guide" class="ghost">🖐️ 指法讲解</button>
+      <button id="btn-weak" class="ghost">📕 弱键专练</button>
+      <button id="btn-badges" class="ghost">🏅 我的徽章</button>
+      <button id="btn-stats" class="ghost">📊 家长统计</button>
+    </footer>
+  </section>
+
+  <!-- ========== 练习页 ========== -->
+  <section id="view-practice" class="view hidden">
+    <div class="practice-top">
+      <button id="btn-back" class="ghost">← 章节</button>
+      <div id="chapter-title" class="p-title"></div>
+      <div class="live-stats">
+        <span id="stat-combo">🔥 连击 x0</span>
+        <span id="stat-acc">🎯 正确率 100%</span>
+        <select id="voice-select" class="voice-sel" title="按键声音">
+          <option value="auto">🎙️ 自动人声</option>
+          <option value="beep">🔔 滴滴声</option>
+          <option value="en">🍎 英文女声</option>
+          <option value="py">🐼 拼音女声</option>
+        </select>
+        <button class="mute-btn" title="音效开关">🔊</button>
+      </div>
+    </div>
+
+    <div id="progress-track"><div id="progress-fill"></div></div>
+    <div id="ghost-row" class="ghost-row hidden">
+      <span class="ghost-label">👻 最佳纪录</span>
+      <div id="ghost-track"><div id="ghost-fill"></div></div>
+      <span id="ghost-best" class="ghost-label"></span>
+    </div>
+    <p id="chapter-tip" class="tip"></p>
+
+    <div id="stage">
+      <div id="tape" class="tape hidden"></div>
+      <div id="word-card" class="word-card hidden">
+        <div id="wc-emoji"></div>
+        <div id="wc-hanzi"></div>
+        <div class="wc-pinyin-row">
+          <span id="wc-pinyin-big" class="wc-pinyin-big"></span>
+          <button id="btn-speak" class="wc-play-btn" title="点击听读音">▶</button>
+        </div>
+        <p id="wc-group" class="tip"></p>
+        <div id="wc-slots" class="slots"></div>
+        <div class="card-btns">
+          <button id="btn-skip" class="ghost small">换一个 ⏭️</button>
+          <button class="ghost small case-btn case-active" data-case="uppercase">大写 A</button>
+          <button class="ghost small case-btn" data-case="lowercase">小写 a</button>
+          <button class="ghost small case-btn" data-case="both">对照 a A</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========== 写字乐园：模式选择 ========== -->
+  <section id="view-writing-modes" class="view hidden">
+    <div class="practice-top">
+      <button id="btn-writing-back" class="ghost">← 章节</button>
+      <div id="writing-chapter-title" class="p-title"></div>
+      <span></span>
+    </div>
+    <div class="writing-modes">
+      <button class="writing-mode-card mode-assemble" data-mode="assemble">
+        <span class="wm-emoji">🧩</span>
+        <span class="wm-name" data-zh="拼字游戏" data-en="单词拼写">拼字游戏</span>
+        <span class="wm-desc" data-zh="拖拽部件拼成汉字" data-en="看中文拼出英文单词">拖拽部件拼成汉字</span>
+      </button>
+      <button class="writing-mode-card mode-match" data-mode="match">
+        <span class="wm-emoji">🔗</span>
+        <span class="wm-name" data-zh="配对游戏" data-en="英中配对">配对游戏</span>
+        <span class="wm-desc" data-zh="汉字和拼音翻牌配对" data-en="英文单词和中文意思配对">汉字和拼音翻牌配对</span>
+      </button>
+      <button class="writing-mode-card mode-write" data-mode="write">
+        <span class="wm-emoji">✍️</span>
+        <span class="wm-name">写字练习</span>
+        <span class="wm-desc">跟着笔顺描红 / 默写</span>
+      </button>
+    </div>
+    <button id="btn-wrongbook" class="ghost wrongbook-btn">📕 错字复习（<span id="wrongbook-count">0</span>）</button>
+  </section>
+
+  <!-- ========== 拼字游戏 ========== -->
+  <section id="view-assemble" class="view hidden">
+    <div class="practice-top">
+      <button id="btn-assemble-back" class="ghost">← 返回</button>
+      <div class="p-title">🧩 拼字游戏</div>
+      <div class="live-stats"><span id="assemble-progress">0/0</span></div>
+    </div>
+    <p id="assemble-hint" class="tip"></p>
+    <div id="assemble-stage">
+      <svg id="assemble-target" viewBox="0 0 1024 1024"></svg>
+      <div id="assemble-pieces"></div>
+    </div>
+  </section>
+
+  <!-- ========== 配对游戏 ========== -->
+  <section id="view-match" class="view hidden">
+    <div class="practice-top">
+      <button id="btn-match-back" class="ghost">← 返回</button>
+      <div class="p-title">🔗 配对游戏</div>
+      <div class="live-stats"><span id="match-moves">步数 0</span></div>
+    </div>
+    <div id="match-grid" class="match-grid"></div>
+  </section>
+
+  <!-- ========== 写字练习 ========== -->
+  <section id="view-write" class="view hidden">
+    <div class="practice-top">
+      <button id="btn-write-back" class="ghost">← 返回</button>
+      <div id="write-title" class="p-title">✍️ 写字练习</div>
+      <div class="live-stats">
+        <button id="btn-write-trace" class="ghost small write-mode-btn active" data-wmode="trace">描红</button>
+        <button id="btn-write-dictate" class="ghost small write-mode-btn" data-wmode="dictate">默写</button>
+      </div>
+    </div>
+    <div class="write-pinyin-row">
+      <span id="write-pinyin-big" class="write-pinyin-big"></span>
+      <button id="btn-write-speak" class="write-play-btn" title="点击听读音">▶</button>
+    </div>
+    <p id="write-prompt" class="tip"><span id="write-prompt-text"></span></p>
+    <div id="write-stage">
+      <div id="write-target"></div>
+    </div>
+    <div class="card-btns">
+      <button id="btn-write-demo" class="ghost small">▶️ 笔顺演示</button>
+      <button id="btn-write-hint" class="ghost small">💡 提示</button>
+      <button id="btn-write-redo" class="ghost small">🔄 重写</button>
+      <button id="btn-write-wrongtoggle" class="ghost small">📕 加入错字库</button>
+      <button id="btn-write-next" class="ghost small primary">下一个 ⏭️</button>
+    </div>
+  </section>
+
+  <!-- ========== 拼音表：点一下就读出来，不用打字（本站不使用，占位保持共用 app.js 正常运行） ========== -->
+  <section id="view-pinyin-chart" class="view hidden">
+    <div class="practice-top">
+      <button id="btn-pinyinchart-back" class="ghost">← 乐园</button>
+      <div class="p-title">🐼 拼音表</div>
+      <span></span>
+    </div>
+    <p class="tip">点一下卡片，听听这个拼音怎么读</p>
+    <div id="pinyin-chart"></div>
+  </section>
+
+  <!-- ========== 共享虚拟键盘（练习 + 游戏） ========== -->
+  <div id="kb-wrap">
+    <div id="keyboard"></div>
+    <div class="legend">
+      <span class="lg lg-p">小指</span>
+      <span class="lg lg-r">无名指</span>
+      <span class="lg lg-m">中指</span>
+      <span class="lg lg-i">左食指</span>
+      <span class="lg lg-i2">右食指</span>
+      <span class="lg lg-n">✨ 闪烁的键 = 下一个要按的键</span>
+    </div>
+  </div>
+
+  <!-- ========== 指法讲解页 ========== -->
+  <section id="view-guide" class="view hidden">
+    <div class="practice-top">
+      <button id="btn-guide-back" class="ghost">← 返回</button>
+      <div class="p-title">🖐️ 指法讲解</div>
+      <span></span>
+    </div>
+
+    <div class="guide-steps">
+      <div class="gstep"><b>1</b><span>两手轻轻放在基准行，食指摸到 <i>F</i> 和 <i>J</i> 上的小凸点（有横杠标记）</span></div>
+      <div class="gstep"><b>2</b><span>每个手指只管自己颜色区域的键，按完马上回基准行休息</span></div>
+      <div class="gstep"><b>3</b><span>眼睛看屏幕，不看键盘——一开始慢一点也没关系</span></div>
+    </div>
+
+    <div id="guide-keyboard" class="guide-kb"></div>
+
+    <div class="finger-cards">
+      <div class="fcard" style="--c:var(--fp)"><span class="fname">左小指</span><span class="fkeys">Q A Z</span></div>
+      <div class="fcard" style="--c:var(--fr)"><span class="fname">左无名指</span><span class="fkeys">W S X</span></div>
+      <div class="fcard" style="--c:var(--fm)"><span class="fname">左中指</span><span class="fkeys">E D C</span></div>
+      <div class="fcard" style="--c:var(--fi)"><span class="fname">左食指</span><span class="fkeys">R T F G V B</span></div>
+      <div class="fcard" style="--c:var(--fi2)"><span class="fname">右食指</span><span class="fkeys">Y U H J N M</span></div>
+      <div class="fcard" style="--c:var(--fm)"><span class="fname">右中指</span><span class="fkeys">I K</span></div>
+      <div class="fcard" style="--c:var(--fr)"><span class="fname">右无名指</span><span class="fkeys">O L</span></div>
+      <div class="fcard" style="--c:var(--fp)"><span class="fname">右小指</span><span class="fkeys">P</span></div>
+    </div>
+    <p class="guide-note">👍 两个大拇指负责空格键</p>
+  </section>
+
+  <!-- ========== 青蛙过河游戏页 ========== -->
+  <section id="view-game" class="view hidden">
+    <div class="practice-top">
+      <button id="btn-game-back" class="ghost">← 首页</button>
+      <div class="p-title">🐸 青蛙过河</div>
+      <div class="live-stats">
+        <span id="game-hearts">❤️❤️❤️</span>
+        <span id="game-progress">🍃 0/0</span>
+      </div>
+    </div>
+    <div id="river"></div>
+    <div id="game-card">
+      <span id="gc-hint"></span>
+      <span id="gc-buffer"></span>
+    </div>
+  </section>
+
+  <!-- ========== 结算弹窗 ========== -->
+  <div id="overlay" class="overlay hidden">
+    <div class="result-card">
+      <div id="res-stars" class="stars"></div>
+      <h2 id="res-title"></h2>
+      <div id="res-stats" class="res-stats"></div>
+      <p id="res-miss" class="res-miss"></p>
+      <p id="res-record" class="res-record hidden"></p>
+      <div class="res-btns">
+        <button id="btn-retry" class="primary">🔄 再来一次</button>
+        <button id="btn-next" class="primary green">下一关 ➡️</button>
+        <button id="btn-home" class="ghost">回章节列表</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 家长统计弹窗 ========== -->
+  <div id="stats-overlay" class="overlay hidden">
+    <div class="result-card">
+      <h2>📊 家长统计</h2>
+      <div id="stats-body"></div>
+      <button id="btn-stats-close" class="ghost">关闭</button>
+    </div>
+  </div>
+
+  <!-- ========== 我的徽章弹窗 ========== -->
+  <div id="badges-overlay" class="overlay hidden">
+    <div class="result-card">
+      <h2>🏅 我的徽章</h2>
+      <div id="badges-body"></div>
+      <button id="btn-badges-close" class="ghost">关闭</button>
+    </div>
+  </div>
+
+  <!-- ========== 多娃档案弹窗 ========== -->
+  <div id="profile-overlay" class="overlay hidden">
+    <div class="result-card">
+      <h2>👨‍👩‍👧 选择档案</h2>
+      <div id="profile-list" class="profile-list"></div>
+      <div class="profile-add">
+        <input id="profile-name" class="profile-input" maxlength="8" placeholder="新小朋友的名字">
+        <button id="btn-profile-add" class="primary">➕ 添加</button>
+      </div>
+      <button id="btn-profile-close" class="ghost">关闭</button>
+    </div>
+  </div>
+
+  <!-- ========== 游戏选择弹窗 ========== -->
+  <div id="game-overlay" class="overlay hidden">
+    <div class="result-card">
+      <h2>🐸 青蛙过河</h2>
+      <p class="res-miss">打对荷叶上的内容，小青蛙就往前跳一格；打错会掉一条命，一共 3 条命！</p>
+      <div class="res-btns game-modes">
+        <button class="primary" data-mode="letters">🅰️ 字母模式 · 跳 10 片荷叶</button>
+        <button class="primary orange" data-mode="words">🍎 单词模式 · 跳 6 片荷叶</button>
+      </div>
+      <label class="branch-toggle"><input type="checkbox" id="branch-check"> 🏆 挑战模式 · 分支河道，青蛙在荷叶间跳来跳去</label>
+      <label class="branch-toggle"><input type="checkbox" id="hidekb-check"> 🙈 隐藏键盘 · 盲打挑战，河流更宽</label>
+      <div class="res-btns" style="margin-top:14px">
+        <button id="btn-game-close" class="ghost">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 游戏结算弹窗 ========== -->
+  <div id="game-result" class="overlay hidden">
+    <div class="result-card">
+      <div id="gr-stars" class="stars"></div>
+      <h2 id="gr-title"></h2>
+      <div id="gr-stats" class="res-stats"></div>
+      <div class="res-btns">
+        <button id="btn-game-retry" class="primary">🔄 再来一次</button>
+        <button id="btn-game-home" class="ghost">回首页</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 设置弹窗 ========== -->
+  <div id="settings-overlay" class="overlay hidden">
+    <div class="result-card">
+      <h2>⚙️ 设置</h2>
+      <div class="settings-row">
+        <span>按键声音</span>
+        <select id="voice-select-home" class="voice-sel" title="按键声音">
+          <option value="auto">🎙️ 自动人声</option>
+          <option value="beep">🔔 滴滴声</option>
+          <option value="en">🍎 英文女声</option>
+          <option value="py">🐼 拼音女声</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <span>音效</span>
+        <button class="mute-btn ghost" title="音效开关">🔊</button>
+      </div>
+      <div class="settings-row">
+        <span>每关通过鼓励语音</span>
+        <input type="checkbox" id="encourage-check" class="settings-checkbox" checked>
+      </div>
+      <div class="settings-row">
+        <span>自由选关（解锁全部关卡）</span>
+        <button id="btn-freejump" class="ghost">🔒 自由选关：关</button>
+      </div>
+      <div class="settings-row">
+        <span>清空当前小朋友的练习进度</span>
+        <button id="btn-reset" class="ghost danger">🗑️ 清空进度</button>
+      </div>
+      <button id="btn-settings-close" class="ghost">关闭</button>
+    </div>
+  </div>
+
+  <button id="btn-settings" class="settings-fab" title="设置">⚙️</button>
+
+  <div id="toast" class="toast hidden"></div>
+</div>
+
+<script src="data.js"></script>
+<script src="../js/writing-data.js"></script>
+<script src="../js/vendor/hanzi-writer.min.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>
